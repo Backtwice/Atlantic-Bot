@@ -1,0 +1,33 @@
+{
+  "name": "atlantic-bot",
+  "version": "1.0.0",
+  "description": "A basic Discord.js bot for my friend's server.",
+  "main": "src/bot.js",
+  "scripts": {
+    "test": "echo \"Test success!\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Backtwice/Atlantic-Bot.git"
+  },
+  "keywords": [
+    "node",
+    "discord",
+    "geometry-dash"
+  ],
+  "author": "Backtwice",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Backtwice/Atlantic-Bot/issues"
+  },
+  "homepage": "https://github.com/Backtwice/Atlantic-Bot#readme",
+  "dependencies": {
+    "@discordjs/builders": "^0.11.0",
+    "@discordjs/rest": "^0.2.0-canary.0",
+    "discord-api-types": "^0.26.1",
+    "discord.js": "^13.6.0",
+    "dotenv": "^14.2.0",
+    "fs": "^0.0.1-security",
+    "node-fetch": "^2.6.7"
+  }
+}
