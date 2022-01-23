@@ -4,7 +4,10 @@
   "description": "A basic Discord.js bot for my friend's server.",
   "main": "src/bot.js",
   "scripts": {
-    "test": "echo \"Test success!\""
+    "test": "echo \"Test success!\"",
+    "deploy-l": "node src/functions/deployGuildCommands.js",
+    "deploy-g": "node src/functions/deployGlobalCommands.js",
+    "start": "node ."
   },
   "repository": {
     "type": "git",

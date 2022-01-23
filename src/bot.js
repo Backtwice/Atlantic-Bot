@@ -1,22 +1,37 @@
-const {Client, Intents, Collection} = require('discord.js')
+const {Client, Collection} = require('discord.js')
+const client = new Client({intents: 32767, allowedMentions: {repliedUser: false}})
+const config = require('./config.json')
 const FS = require('fs')
+client.commands = new Collection()
 
-const BotClient = new Client({intents: 32767})
-const DIR_Functions = FS.readdirSync('src/functions').filter(Name => Name.endsWith('.js'))
-const DIR_Commands = FS.readdirSync('src/commands')
-const DIR_Events = FS.readdirSync('src/events').filter(Name => Name.endsWith('.js'))
+const CommandFiles = FS.readdirSync('src/commands').filter((File) => File.endsWith('.js'))
+const EventFiles = FS.readdirSync('src/events').filter((File) => File.endsWith('.js'))
 
-require('dotenv').config()
-BotClient.commands = new Collection()
+for (const File of CommandFiles) {
+	const Command = require(`./commands/${File}`)
+	client.commands.set(Command.data.name, Command)
+}
 
-BotClient.on('ready', () => {
-	console.log(`Logged in as ${BotClient.user.tag}`)
-})
+for (const File of EventFiles) {
+	const Event = require(`./events/${File}`)
+	Event.once ? client.once(Event.name, (...args) => Event.execute(...args)) : client.on(Event.name, (...args) => Event.execute(...args))
+}
 
-(async () => {
-	for (file of functions) {
-		require(`./functions/${file}`)(BotClient)
+client.on('interactionCreate', async (Inter) => {
+	if (!Inter.isCommand()) return
+
+	const Command = client.commands.get(Inter.commandName)
+	if (!Command) return
+
+	try {
+		await Command.execute(Inter)
+	} catch (Error) {
+		console.error(Error)
+		await Inter.reply({
+			content: 'Произошла ошибка при исполнений команды!',
+			ephemeral: true
+		})
 	}
-
-	BotClient.login(process.env.TOKEN)
 })
+
+client.login(config.token)
